@@ -149,6 +149,14 @@ const testCases = [
       [equals, "2"]
     ],
     Right(2)
+  ],
+  [
+    "Prevent More Than 10 Digits",
+    [
+      ...Array(11).fill(0).map((_, i) => [digit(7), "7".repeat(Math.min(10, i + 1))]),
+      [equals, "7777777777"]
+    ],
+    Right(7777777777)
   ]
 ]
 

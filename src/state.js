@@ -26,6 +26,7 @@ export const initialState = () => ({
   error: Nothing
 })
 
+// A redux-style reducer that takes an action and produces a new state
 export const reducer = action => ({tokens, numberBuilder}) => {
   return Action.match({
     digit: x => ({
@@ -40,11 +41,16 @@ export const reducer = action => ({tokens, numberBuilder}) => {
     }),
     // Replaces old operator with new operator if two operator buttons are pressed in a row
     operator: x => {
-      const newTokens = lastIsOperator(tokens) && numberBuilder.length === 0
-        ? [...util.tail(tokens), Token.operator(x)]
-        : numberBuilder.length === 0
-            ? [...tokens, Token.operator(x)]
-            : [...tokens, mkNumber(numberBuilder), Token.operator(x)]
+      const newTokens = (() => {
+        if (numberBuilder.length === 0) {
+          if (tokens.length === 0) return []
+          if (lastIsOperator(tokens)) return [...util.tail(tokens), Token.operator(x)]
+          return [...tokens, Token.operator(x)]
+        } else {
+          return [...tokens, mkNumber(numberBuilder), Token.operator(x)]
+        }
+      })()
+
       return {
         tokens: newTokens,
         numberBuilder: [],
@@ -58,10 +64,12 @@ export const reducer = action => ({tokens, numberBuilder}) => {
 
 const hasDot = util.any(x => x === ".")
 
-// Assume that there is only one dot in the array to keep things simple, this is enforced in the reducer itself
+// Assumes that there is only one dot in the array to keep things simple, this is enforced in the reducer itself
 export const mkNumber = util.compose(Token.number, Number, util.fold(util.String))
 
 export const lastIsOperator = util.compose(x => x && Token.isOperator(x), util.last)
+
+const lastIsNumber = util.compose(x => x && Token.isNumber(x), util.last)
 
 const tooManyDigits = xs => xs.filter(x => x !== ".").length > 10
 

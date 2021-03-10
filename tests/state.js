@@ -7,7 +7,7 @@ import { Token } from "../src/expr.js"
 const { Either, Maybe } = util
 const { Left, Right } = Either
 const { Just } = Maybe
-const { digit, dot, operator, equals } = Action
+const { digit, dot, operator, equals, clear } = Action
 
 test("mkNumber", t => {
   t.deepEqual(Token.number(123.456), mkNumber(["1", "2", "3", ".", "4", "5", "6"]))
@@ -128,6 +128,27 @@ const testCases = [
       [equals, "4"]
     ],
     Right(4)
+  ],
+  [
+    "Ignore Invalid Operators",
+    [
+      [operator("add"), ""],
+      [digit(1), "1"],
+      [operator("add"), "1"],
+      [digit(1), "1"],
+      [equals, "2"],
+      [clear, ""],
+      [digit(1), "1"],
+      [operator("divide"), "1"],
+      [digit(0), "0"],
+      [equals, "Undefined"],
+      [operator("add"), ""],
+      [digit(1), "1"],
+      [operator("add"), "1"],
+      [digit(1), "1"],
+      [equals, "2"]
+    ],
+    Right(2)
   ]
 ]
 

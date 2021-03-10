@@ -24,7 +24,7 @@ export const intermediateDisplay = (tokens, numberBuilder) => {
   return Maybe.match({
     Nothing: () => numDisplay(tokens, numberBuilder),
     Just: op => Token.precedence(op.value) === Token.precedence(util.last(tokens).value)
-      ? display(handleEquals(stripTrailingOperator(tokens), numberBuilder))
+      ? display(handleEquals(tokens, numberBuilder))
       : numDisplay(tokens, numberBuilder)
   })(last)
 }
@@ -36,7 +36,3 @@ export const numDisplay = (tokens, numberBuilder) => numberBuilder.length === 0
 const lastOperator = util.lastBy(Token.isOperator)
 
 const lastNumber = util.lastBy(Token.isNumber)
-
-const stripTrailingOperator = tokens => util.last(tokens) && util.last(tokens).tag === "operator"
-  ? util.tail(tokens)
-  : tokens

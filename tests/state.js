@@ -146,6 +146,7 @@ const testCases = [
       [digit(1), "1"],
       [operator("add"), "1"],
       [digit(1), "1"],
+      [operator("add"), "2"],
       [equals, "2"]
     ],
     Right(2)
@@ -157,7 +158,7 @@ const testCases = [
       [equals, "7777777777"]
     ],
     Right(7777777777)
-  ]
+  ],
 ]
 
 testCases.forEach(testCase => {

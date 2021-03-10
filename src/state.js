@@ -76,9 +76,13 @@ const errorOnOverflow = Either.bind(x => String(x).split(".")[0].split("").lengt
 const evaluate = util.compose(errorOnOverflow, interpret, parse)
 
 export const handleEquals = (tokens, numberBuilder) => {
-  const answer = evaluate(numberBuilder.length === 0 ? tokens : [...tokens, mkNumber(numberBuilder)])
+  const answer = evaluate(numberBuilder.length === 0 ? stripTrailingOperator(tokens) : [...tokens, mkNumber(numberBuilder)])
   return Either.match({
     Left: e => ({ tokens: [], numberBuilder: [], error: Just(e) }),
     Right: x => ({ tokens: [ Token.number(x) ], numberBuilder: [], error: Nothing })
   })(answer)
 }
+
+const stripTrailingOperator = tokens => util.last(tokens) && util.last(tokens).tag === "operator"
+  ? util.tail(tokens)
+  : tokens

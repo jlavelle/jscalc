@@ -69,8 +69,6 @@ export const mkNumber = util.compose(Token.number, Number, util.fold(util.String
 
 export const lastIsOperator = util.compose(x => x && Token.isOperator(x), util.last)
 
-const lastIsNumber = util.compose(x => x && Token.isNumber(x), util.last)
-
 const tooManyDigits = xs => xs.filter(x => x !== ".").length >= 10
 
 const errorOnOverflow = Either.bind(x => String(x).split(".")[0].split("").length > 10 ? Left("Error") : Right(x))

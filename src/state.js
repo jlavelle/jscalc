@@ -42,7 +42,9 @@ export const reducer = action => ({tokens, numberBuilder}) => {
     operator: x => {
       const newTokens = lastIsOperator(tokens) && numberBuilder.length === 0
         ? [...util.tail(tokens), Token.operator(x)]
-        : [...tokens, mkNumber(numberBuilder), Token.operator(x)]
+        : numberBuilder.length === 0
+            ? [...tokens, Token.operator(x)]
+            : [...tokens, mkNumber(numberBuilder), Token.operator(x)]
       return {
         tokens: newTokens,
         numberBuilder: [],
@@ -63,7 +65,7 @@ export const lastIsOperator = util.compose(x => x && Token.isOperator(x), util.l
 
 const tooManyDigits = xs => xs.filter(x => x !== ".").length > 10
 
-const errorOnOverflow = Either.bind(x => tooManyDigits(String(x).split("")) ? Left("Error") : Right(x))
+const errorOnOverflow = Either.bind(x => String(x).split(".")[0].split("").length > 10 ? Left("Error") : Right(x))
 
 const evaluate = util.compose(errorOnOverflow, interpret, parse)
 

@@ -70,4 +70,14 @@ const tail = xs => xs.slice(0, xs.length - 1)
 
 const panic = message => { throw new Error(message) }
 
-export default { Either, Maybe, String, takeWhile, panic, any, last, lastBy, compose, fold, tail }
+const roundSig = n => x => {
+  if (x === 0) return 0
+
+  const d = Math.ceil(Math.log10(x < 0 ? -x : x))
+  const p = n - d
+  const m = Math.pow(10, p)
+  const s = Math.round(x * m)
+  return s / m
+}
+
+export default { Either, Maybe, String, takeWhile, panic, any, last, lastBy, compose, fold, tail, roundSig }

@@ -30,7 +30,7 @@ export const intermediateDisplay = (tokens, numberBuilder) => {
 }
 
 export const numDisplay = (tokens, numberBuilder) => numberBuilder.length === 0
-  ? Maybe.maybe("")(x => String(x.value))(lastNumber(tokens))
+  ? Maybe.maybe("")(x => String(util.roundSig(10)(x.value)))(lastNumber(tokens))
   : util.fold(util.String)(numberBuilder)
 
 const lastOperator = util.lastBy(Token.isOperator)

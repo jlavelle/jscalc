@@ -115,6 +115,19 @@ const testCases = [
       [equals, "2.4"]
     ],
     Right(2.4)
+  ],
+  [
+    "Continue After Equals",
+    [
+      [digit(1), "1"],
+      [operator("add"), "1"],
+      [digit(1), "1"],
+      [equals, "2"],
+      [operator("add"), "2"],
+      [digit(2), "2"],
+      [equals, "4"]
+    ],
+    Right(4)
   ]
 ]
 

@@ -1,12 +1,14 @@
 import { Action } from "./state.js"
 import util from "./util.js"
 
+// `send` is a callback that receives actions, used in button even handlers
 export const initialize = doc => send => {
   const container = doc.getElementById("app")
   const html = view(doc)(send)
   container.append(html)
 }
 
+// Everything except the display is static
 export const redraw = doc => value => {
   const display = doc.getElementById("display")
   display.textContent = value

@@ -18,9 +18,10 @@ test("lastIsOperator", t => {
   t.deepEqual(false, lastIsOperator([Token.operator("add"), Token.number(7)]))
 })
 
-// Apply the reducer to an array of [action, display] pairs, checking that the display is correct
+// Apply the reducer to an array of [action, _] pairs
 const foldActions = ads => init => ads.reduce((acc, [a, _]) => reducer(a)(acc), init)
 
+// Similar to foldActions but also checks to see if the display is correct
 const checkDisplay = t => ads => init => ads.reduce((acc, [a, d]) => {
   const reduced = reducer(a)(acc)
   t.deepEqual(d, display(reduced), )
